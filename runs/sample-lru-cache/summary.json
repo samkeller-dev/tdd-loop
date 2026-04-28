@@ -1,0 +1,52 @@
+{
+  "challenge": "challenges\\04_lru_cache",
+  "model": "mistral:7b-instruct",
+  "max_attempts": 4,
+  "attempts": [
+    {
+      "n": 1,
+      "timestamp": "2026-04-28T02:23:59.605159Z",
+      "reasoning": "I will implement an LRU Cache using a dictionary for storing key-value pairs and a doubly linked list to keep track of the order of usage. The cache will have a capacity limit, and when exceeded, the least recently used item will be removed from both the dictionary and the linked list.",
+      "code": "class ListNode: \n    def __init__(self, key, value):\n        self.key = key\n        self.value = value\n        self.prev = None\n        self.next = None\nnclass LRUCache:\n    def __init__(self, capacity: int):\n        self.capacity = capacity\n        self.cache = {} \n        self.head = None\n        self.tail = None\n\n    def get(self, key) -> int:\n        if key not in self.cache:\n            return -1\n        node = self.cache[key]\n        self.move_to_head(node)\n        return node.value\n\n    def put(self, key, value) -> None:\n        if key in self.cache:\n            node = self.cache[key]\n            node.value = value\n            self.move_to_head(node)\n        else:\n            if len(self.cache) >= self.capacity:\n                self.evict_least_recently_used()\n            node = ListNode(key, value)\n            self.cache[key] = node\n            self.add_to_head(node)\n\n    def move_to_head(self, node) -> None:\n        if self.head == node:\n            return\n        self.remove_from_list(node)\n        if self.head:\n            node.next = self.head\n            self.head.prev = node\n            self.head = node\n        else:\n            self.tail = node\n            self.head = node\n\n    def add_to_head(self, node) -> None:\n        if not self.head:\n            self.head = node\n            self.tail = node\n        else:\n            node.next = self.head\n            self.head.prev = node\n            self.head = node\n\n    def remove_from_list(self, node) -> None:\n        if node.prev:\n            node.prev.next = node.next\n        else:\n            self.head = node.next\n        if node.next:\n            node.next.prev = node.prev\n        else:\n            self.tail = node.prev\n\n    def evict_least_recently_used(self) -> None:\n        least_recent = self.tail\n        del self.cache[least_recent.key]\n        if self.tail == self.head:\n            self.head = None\n            self.tail = None\n        else:\n            self.remove_from_list(self.tail)\n        self.move_to_head(least_recent)",
+      "result": {
+        "passed": 0,
+        "failed": 1,
+        "total": 1,
+        "duration_s": 0.6584969000005003,
+        "output_tail": "\n=================================== ERRORS ====================================\n______________________ ERROR collecting test_solution.py ______________________\n..\\..\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pytest\\python.py:507: in importtestmodule\n    mod = import_path(\n..\\..\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pytest\\pathlib.py:587: in import_path\n    importlib.import_module(module_name)\n..\\..\\Python\\pythoncore-3.14-64\\Lib\\importlib\\__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1406: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1371: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1342: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:938: in _load_unlocked\n    ???\n..\\..\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pytest\\assertion\\rewrite.py:197: in exec_module\n    exec(co, module.__dict__)\ntest_solution.py:1: in <module>\n    from solution import LRUCache\nE     File \"C:\\Users\\Sam\\AppData\\Local\\Temp\\tdd_loop_dfqabiwj\\solution.py\", line 7\nE       nclass LRUCache:\nE              ^^^^^^^^\nE   SyntaxError: invalid syntax\n=========================== short test summary info ===========================\nERROR test_solution.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.20s\n",
+        "first_traceback": "..\\..\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pytest\\python.py:507: in importtestmodule\n    mod = import_path(\n..\\..\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pytest\\pathlib.py:587: in import_path\n    importlib.import_module(module_name)\n..\\..\\Python\\pythoncore-3.14-64\\Lib\\importlib\\__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1406: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1371: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1342: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:938: in _load_unlocked\n    ???\n..\\..\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pytest\\assertion\\rewrite.py:197: in exec_module\n    exec(co, module.__dict__)\ntest_solution.py:1: in <module>\n    from solution import LRUCache\nE     File \"C:\\Users\\Sam\\AppData\\Local\\Temp\\tdd_loop_dfqabiwj\\solution.py\", line 7\nE       nclass LRUCache:\nE              ^^^^^^^^\nE   SyntaxError: invalid syntax"
+      }
+    },
+    {
+      "n": 2,
+      "timestamp": "2026-04-28T02:27:15.510709Z",
+      "reasoning": "In the previous attempt, the class name was incorrectly defined as 'nclass LRUCache', which is invalid syntax in Python. The correct syntax should be 'class LRUCache'. Additionally, there seems to be a missing indentation issue on line 7.",
+      "code": "class LRUCache:\n    def __init__(self, capacity: int): ...\n    def get(self, key) -> int: ...     # returns -1 if key is absent\n    def put(self, key, value) -> None: ...",
+      "result": {
+        "passed": 0,
+        "failed": 8,
+        "total": 8,
+        "duration_s": 0.5646685000001526,
+        "output_tail": "...[truncated]...\nLRUCache object at 0x000001E9C2348050>.get\n_________________________ test_eviction_full_sequence _________________________\ntest_solution.py:32: in test_eviction_full_sequence\n    assert c.get(1) == 1\nE   assert None == 1\nE    +  where None = get(1)\nE    +    where get = <solution.LRUCache object at 0x000001E9C2292190>.get\n______________ test_put_existing_key_updates_value_and_refreshes ______________\ntest_solution.py:47: in test_put_existing_key_updates_value_and_refreshes\n    assert c.get(1) == 100\nE   assert None == 100\nE    +  where None = get(1)\nE    +    where get = <solution.LRUCache object at 0x000001E9C2292520>.get\n______________________________ test_capacity_one ______________________________\ntest_solution.py:56: in test_capacity_one\n    assert c.get(1) == -1\nE   assert None == -1\nE    +  where None = get(1)\nE    +    where get = <solution.LRUCache object at 0x000001E9C22B32F0>.get\n______________________ test_get_missing_does_not_insert _______________________\ntest_solution.py:65: in test_get_missing_does_not_insert\n    assert c.get(1) == 1\nE   assert None == 1\nE    +  where None = get(1)\nE    +    where get = <solution.LRUCache object at 0x000001E9C2305040>.get\n________________________ test_does_not_exceed_capacity ________________________\ntest_solution.py:75: in test_does_not_exceed_capacity\n    assert present == 3\nE   assert 10 == 3\n=========================== short test summary info ===========================\nFAILED test_solution.py::test_basic_put_get - assert None == 1\nFAILED test_solution.py::test_missing_key_returns_minus_one - assert None == -1\nFAILED test_solution.py::test_eviction_of_lru_after_get - assert None == 1\nFAILED test_solution.py::test_eviction_full_sequence - assert None == 1\nFAILED test_solution.py::test_put_existing_key_updates_value_and_refreshes - ...\nFAILED test_solution.py::test_capacity_one - assert None == -1\nFAILED test_solution.py::test_get_missing_does_not_insert - assert None == 1\nFAILED test_solution.py::test_does_not_exceed_capacity - assert 10 == 3\n8 failed in 0.09s\n",
+        "first_traceback": "test_solution.py:8: in test_basic_put_get\n    assert c.get(1) == 1\nE   assert None == 1\nE    +  where None = get(1)\nE    +    where get = <solution.LRUCache object at 0x000001E9C22E0C20>.get"
+      }
+    },
+    {
+      "n": 3,
+      "timestamp": "2026-04-28T02:29:34.275449Z",
+      "reasoning": "In the previous attempt, the `get` method was not implemented correctly, it always returned None instead of the correct value or -1 when the key is missing. This caused all the test cases to fail.",
+      "code": "class LRUCache: \n    def __init__(self, capacity: int):\n        self.cache = {} \n        self.order = [] \n        self.capacity = capacity\n    \n    def get(self, key) -> int:\n        if key in self.cache:\n            self.order.remove(key)\n            self.order.append(key)\n            return self.cache[key]\n        else:\n            return -1\n    \n    def put(self, key, value) -> None:\n        if self.capacity == 0:\n            raise ValueError('Cache is full')\n        if key in self.cache:\n            self.order.remove(key)\n            self.order.append(key)\n            self.cache[key] = value\n        else:\n            self.cache[key] = value\n            self.order.append(key)\n            if len(self.cache) > self.capacity:\n                least_recently_used = self.order.pop(0)\n                del self.cache[least_recently_used]",
+      "result": {
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "duration_s": 0.4743753000002471,
+        "output_tail": "........                                                                 [100%]\n8 passed in 0.03s\n",
+        "first_traceback": null
+      }
+    }
+  ],
+  "final_status": "solved",
+  "started_at": "2026-04-28T02:20:50.810423Z",
+  "ended_at": "2026-04-28T02:29:34.276135Z"
+}

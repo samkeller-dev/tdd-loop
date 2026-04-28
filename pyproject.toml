@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tdd-loop"
+version = "0.1.0"
+description = "Self-correcting LLM coding loop: spec + pytest -> Mistral 7B -> sandboxed run -> failure feedback -> next attempt."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Sam Keller" }]
+license = { text = "MIT" }
+dependencies = [
+    "pydantic>=2.6",
+    "httpx>=0.27",
+    "click>=8.1",
+    "rich>=13.7",
+    "pytest>=8.0",
+    "pytest-json-report>=1.5",
+]
+
+[project.scripts]
+tdd-loop = "tdd_loop.cli:cli"
+
+[tool.setuptools.packages.find]
+include = ["tdd_loop*"]
+exclude = ["tests*", "challenges*", "runs*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+norecursedirs = ["tests/fixtures", "challenges", "runs"]
+python_classes = []  # don't auto-collect Pydantic models named Test*

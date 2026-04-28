@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+.claude/
+CLAUDE.md
+*.swp
+
+# Plan file used to scope the build — kept locally, not committed.
+PLAN_tdd_loop.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Run artefacts — commit only the curated sample
+runs/*
+!runs/sample-lru-cache/
