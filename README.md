@@ -192,26 +192,6 @@ Re-runs vary because temperature is 0.6.
 
 To reproduce: `tdd-loop benchmark --all --runs-dir runs/benchmark`.
 
-## Limitations
-
-- **Sandboxing is by convention, not security.** The runner uses a
-  tempdir + a subprocess timeout. Candidate code runs as the same OS
-  user as the loop. For untrusted models, wrap the runner in a container
-  or firejail.
-- **Mistral 7B Instruct is not a great coding model.** Smaller models
-  sometimes get stuck in a wrong-shaped solution and the refine prompt
-  alone won't unstick them — temperature 0.6 helps but does not fix
-  every case. Larger / coder-tuned models would solve more challenges
-  on the first try; the point of the demo is the *loop*, not the
-  raw model.
-- **Determinism.** Even at low temperature, generations are non-deterministic
-  across runs. Two passes of the benchmark will give different per-challenge
-  attempt counts.
-- **CPU-bound.** Default Docker setup runs Mistral on CPU. With NVIDIA
-  GPUs and `nvidia-container-toolkit`, add `--gpus all` to the
-  `docker run` for a 5–10× speedup.
-- **No streaming, no async, no tools, no retrieval.** This is a one-tool
-  loop. The model sees the whole spec and tests as plain text every turn.
 
 ## Repo layout
 
